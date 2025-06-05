@@ -44,7 +44,7 @@ const LandingPage = () => {
       ))}
         <div className='text-center mb-5 px-45 py-1'
         >
-            <h1 className='text-6xl font-bold text-center px-35 mb-3'>Create <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <h1 className='text-6xl font-bold text-center px-35 mb-3'>Create <span className="bg-gradient-to-r from-purple-500 to-pink-400 bg-clip-text text-transparent">
   Stunning Images </span> with AI Magic</h1>
             <p >Transform your imagination into breathtaking visuals. Generate professional-quality images from simple text descriptions in seconds.</p>
         </div>

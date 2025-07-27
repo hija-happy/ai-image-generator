@@ -9,14 +9,27 @@
   --color-black-lighter: #2d2d30;
     
   --color-purple: #8b5cf6;
+  --color-purple-darkest:#080213;
   --color-purple-dark: #7c3aed;
   --color-purple-light: #a78bfa;
   --color-purple-lighter: #c4b5fd  ;
   
+  --color-letter: #fdf0ff;
+  --color-border: #9b59b6;
+  --color-buttonbg: #e84393;
+  --color-buttonhover: #d63384;
+  --color-placeholder: #caa0d6;
+
   --color-pink: #ec4899;
   --color-pink-dark: #db2777;
   --color-pink-light: #f472b6;
-  --color-pink-lighter: #f9a8  d4;
+  --color-pink-lighter: #f9a8d4;
+
+  --text-color: #fdf0ff;
+  --outline-color: #9b59b6;
+  --button-color: #e84393;
+  --button-hover: #d63384;
+  --placeholder-color: #caa0d6;
   
   /* Gradient Combinations */
   --gradient-primary: linear-gradient(135deg, var(--color-purple) 0%, var(--color-pink) 100%);

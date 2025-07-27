@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
-import './index.css'
+import { useNavigate } from 'react-router-dom'
+import '../index.css'
 import gsap from "gsap";
 import { useRef } from 'react';
 const LandingPage = () => {
 
+  const navigate = useNavigate();
   const bubbleRef = useRef([]);
 
   useEffect(()=>{
@@ -18,7 +20,7 @@ const LandingPage = () => {
       y: random(-300, 300),
       scale: random(0.8, 1.5),
       duration: random(2, 5),
-      ease: "sine.inOut",
+      ease: "power2.inOut",
       repeat: -1,
       yoyo: true,
     });
@@ -45,14 +47,14 @@ const LandingPage = () => {
         <div className='text-center mb-5 px-45 py-1'
         >
             <h1 className='text-6xl font-bold text-center px-35 mb-3'>Create <span className="bg-gradient-to-r from-purple-500 to-pink-400 bg-clip-text text-transparent">
-  Stunning Images </span> with AI Magic</h1>
+             Stunning Images </span> with AI Magic</h1>
             <p >Transform your imagination into breathtaking visuals. Generate professional-quality images from simple text descriptions in seconds.</p>
         </div>
         <div>
-            <button className='btn'>Start Creating Now</button>
+            <button 
+            onClick={ () => navigate('/login')}
+            className='btn'>Start Creating Now</button>
         </div>
     </div>
-  )
-}
-
+  )}
 export default LandingPage

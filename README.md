@@ -1,12 +1,37 @@
-# React + Vite
+# 🎨 AI Image Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A visually stunning web app that transforms user prompts into AI-generated images using modern frontend animations and design.
 
-Currently, two official plugins are available:
+## Features So Far
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🌌 **Animated Landing Page**: Engaging UI with floating gradient bubbles powered by GSAP.
+- 🎨 **TailwindCSS Styling**: Fully responsive and modern layout.
+- 🎯 **Call-to-Action Button**: Start Creating Now button ready for interaction.
 
-## Expanding the ESLint configuration
+## Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend**: React + Vite
+- **Styling**: Tailwind CSS + Custom Design Tokens
+- **Animation**: GSAP
+- **Planned Backend**: Node.js / Express (TBD)
+
+## Current UI Preview
+
+> ✨ Landing page with animated blurred gradient bubbles and a central call to action.
+
+##  Upcoming Goals
+
+- [ ] Add prompt input and generate image functionality
+- [ ] Connect backend API for image generation
+- [ ] Enable user accounts and image history
+- [ ] Implement likes/save/share for generated images
+
+##  Running Locally
+
+```bash
+git clone https://github.com/your-username/ai-image-generator.git
+cd ai-image-generator
+npm install
+npm run dev
+```
+

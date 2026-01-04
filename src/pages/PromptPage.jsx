@@ -67,31 +67,55 @@ const generateImage = async () => {
   setLoading(true);
   setImageURL(null); // clear old image while loading
 
-  const prompt = generatePrompt();
+  
 
-  try {
-    const res = await fetch("http://localhost:5000/api/generate", {
+   try {
+    const res = await fetch("http://localhost:5000/api/generate-image", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt }),
+      body: JSON.stringify({
+        prompt: generatePrompt(),
+        aspectRatio: formData.aspectRatio || "16:9"
+      })
     });
+    
+
+//     if (!res.ok) {
+//       const errorData = await res.json();
+//       throw new Error(errorData.error || "Server error");
+//     }
+
+//     const data = await res.json();
+
+//     // Check if response data is valid and has an array with at least one image URL
+//      if (!data || !data.image) {
+//       throw new Error("Invalid response from server");
+//     }
+
+//     const imageSrc = `data:image/png;base64,${data.image}`;
+//     setImageURL(imageSrc);
+     
+//      console.log("Image generated successfully");
+//   } catch (error) {
+//     console.error("Error generating image:", error);
+//     alert("Failed to generate image. Please try again.");
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+ const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(`Server error: ${res.status}`);
+      throw new Error(data.message || "Generation failed");
     }
 
-    const data = await res.json();
+    // ✅ THIS is the key line
+    const imgSrc = `data:image/png;base64,${data.image}`;
+    setImageURL(imgSrc);
 
-    // Check if response data is valid and has an array with at least one image URL
-    if (!data || !data.data || !data.data[0]) {
-      throw new Error("Invalid response from server");
-    }
-
-    setImageURL(data.data[0]);
-    console.log("Image generated:", data.data[0]);
-  } catch (error) {
-    console.error("Error generating image:", error);
-    alert("Failed to generate image. Please try again.");
+  } catch (err) {
+    setError(err.message);
   } finally {
     setLoading(false);
   }
@@ -278,14 +302,6 @@ const generateImage = async () => {
             {loading ? "Generating Hero Visual..." : "Generate Hero Visual"}
           </button>
         </div>
-
-        {/* Generated Prompt Preview */}
-        {formData.productName && (
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Generated Prompt:</h3>
-            <p className="text-sm text-gray-600 text-left">{generatePrompt()}</p>
-          </div>
-        )}
       </div>
 
       {loading && (

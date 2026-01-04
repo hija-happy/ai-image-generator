@@ -1,117 +1,166 @@
-// const express = require("express");
-// const cors = require("cors");
-// require("dotenv").config(); // To load HF_TOKEN from .env
-// const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+// import cors from "cors";
+// import express from "express";
+// import FormData from "form-data";
+
+// import dotenv from "dotenv";
+// dotenv.config();
+
 // const app = express();
 
 // app.use(cors());
 // app.use(express.json());
 
-// app.post("/api/generate", async (req, res) => {
-//   const { prompt } = req.body;
+// app.post("/api/generate-image", async (req, res) => {
+//   const { prompt, aspectRatio } = req.body;
 
-//   if (!prompt) {
-//     return res.status(400).json({ error: "Prompt is required" });
+// if (!prompt) {
+//     return res.status(400).json({ error: "Prompt is missing" });
 //   }
+
+//   const sizeMap = {
+//     "16:9": { width: 1024, height: 576 },
+//     "4:3": { width: 1024, height: 768 },
+//     "1:1": { width: 1024, height: 1024 }
+//   };
+
+//   const { width, height } = sizeMap[aspectRatio] || sizeMap["16:9"];
 
 //   try {
-//     const response = await fetch("https://router.huggingface.co/fal-ai/fal-ai/flux-lora", {
-//       method: "POST",
-//       headers: {
-//         Authorization: `Bearer ${process.env.HF_TOKEN}`, // Make sure your .env file has HF_TOKEN
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         prompt: prompt,
-//         response_format: "base64",
-//         model: "black-forest-labs/FLUX.1-schnell",
-//       }),
-//     });
+// const formData = new FormData();
+//     formData.append("prompt", prompt);
+// formData.append(
+//   "negative_prompt",
+//   "realistic photography, people, faces, hands, text, logos, dashboards, charts, watermarks"
+// );
+// formData.append("width", width);
+// formData.append("height", height);
+// formData.append("steps", 25);
+// formData.append("cfg_scale", 7);
+// formData.append("samples", 1);
 
-//     const imageBlob = await response.blob();
-//     const buffer = await imageBlob.arrayBuffer();
-//     const base64Image = Buffer.from(buffer).toString("base64");
+//     const response = await fetch(
+//       "https://api.stability.ai/v2beta/stable-image/generate/sdxl",
+//       {
+//         method: "POST",
+//         headers: {
+//           ...formData.getHeaders(),
+//           Authorization: `Bearer ${process.env.STABILITY_API_KEY}`,
+//           Accept: "image/png",
+//         },
+//         body: formData
+//       }
+//     );
 
-//     // Send the image as base64-encoded string to frontend
-//     res.json({ data: [`data:image/png;base64,${base64Image}`] });
+//  if (!response.ok) {
+//   const errorText = await response.text();
+//   console.error("❌ Stability error:", errorText);
+//   return res.status(400).json({ error: errorText });
+// }
+
+//   const buffer = await response.arrayBuffer();
+// const base64Image = Buffer.from(buffer).toString("base64");
+
+// res.json({ image: base64Image });
 
 //   } catch (error) {
-//     console.error("Image generation failed:", error);
-//     res.status(500).json({ error: "Image generation failed" });
-//   }
+//   console.error("🔥 Stability API ERROR:", error);
+//   res.status(500).json({
+//     error: "Image generation failed",
+//     details: error.message
+//   });
+// }
 // });
 
-// app.listen(3001, () => {
-//   console.log("🚀 Server running on http://localhost:3001");
+// app.get("/", (req, res) => {
+//   res.send("AI Image Generator Backend is running");
 // });
 
+// app.listen(5000, () => {
+//   console.log("Backend running on http://localhost:5000");
+// });
+// console.log("Routes registered");
 
-import cors from "cors";
+
+
+
 import express from "express";
-import fetch from "node-fetch";
+import cors from "cors";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
-const PORT = 5000;
 
 app.use(cors());
 app.use(express.json());
 
-const API_KEY = "AIzaSyAg-my8qjStjA4ndSoetPdm6G8KEawkUCA"; // put your key here
+app.post("/api/generate-image", async (req, res) => {
+  const { prompt, aspectRatio } = req.body;
 
-app.post("/api/generate", async (req, res) => {
+  if (!prompt || typeof prompt !== "string") {
+    return res.status(400).json({ error: "Prompt is required" });
+  }
+
+  // ✅ VALID Stability sizes (divisible by 64)
+const sizeMap = {
+  "1:1": { width: 1024, height: 1024 },
+  "16:9": { width: 1536, height: 640 },
+  "4:3": { width: 1344, height: 768 }
+};
+
+const { width, height } = sizeMap[aspectRatio] || sizeMap["16:9"];
+
+
   try {
-    const { prompt } = req.body;
-    console.log("Received prompt:", prompt);
-
-    if (!prompt) {
-      return res.status(400).json({ error: "Prompt is required" });
-    }
-
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${API_KEY}`,
+      "https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${process.env.STABILITY_API_KEY}`,
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
         body: JSON.stringify({
-          contents: [{
-            parts: [{
+          text_prompts: [
+            {
               text: prompt
-            }]
-          }],
-          generationConfig: {
-            response_modalities: ["IMAGE"]
-          }
-        }),
+            }
+          ],
+          cfg_scale: 7,
+          steps: 25,
+          width,
+          height
+        })
       }
     );
 
-    console.log("API Response status:", response.status);
-    
+    const data = await response.json();
+
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error("API Error Response:", errorText);
-      throw new Error(`Google API error: ${response.status} - ${errorText}`);
+      // 🔴 This is where Stability returns id / name / errors[]
+      console.error("STABILITY ERROR:", JSON.stringify(data, null, 2));
+      return res.status(400).json(data);
     }
 
-    const data = await response.json();
-    console.log("API Response data:", JSON.stringify(data, null, 2));
-    
-    // Extract base64 image from Gemini response
-    if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
-      const imagePart = data.candidates[0].content.parts.find(part => part.inline_data);
-      if (imagePart && imagePart.inline_data) {
-        const base64Image = `data:${imagePart.inline_data.mime_type};base64,${imagePart.inline_data.data}`;
-        res.json({ data: [base64Image] });
-      } else {
-        throw new Error("No image found in API response");
-      }
-    } else {
-      throw new Error("Invalid response structure from Google API");
-    }
+    // ✅ Base64 image (official response shape)
+    const base64Image = data.artifacts[0].base64;
+
+    return res.json({ image: base64Image });
+
   } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ error: "Failed to generate image" });
+    console.error("SERVER ERROR:", error);
+    return res.status(500).json({
+      error: "Image generation failed",
+      details: error.message
+    });
   }
 });
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.get("/", (_, res) => {
+  res.send("AI Image Generator Backend is running");
+});
+
+app.listen(5000, () => {
+  console.log("Backend running on http://localhost:5000");
+});

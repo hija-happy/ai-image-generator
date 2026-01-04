@@ -12,6 +12,8 @@ const PromptPage = () => {
     background: "Light",
     aspectRatio: "16:9"
   });
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [imageURL, setImageURL] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -71,7 +73,7 @@ const generateImage = async () => {
   
 
    try {
-    const res = await fetch("http://localhost:5000/api/generate-image", {
+    const res = await fetch(`${API_URL}/api/generate-image`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

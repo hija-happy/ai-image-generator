@@ -8,7 +8,7 @@ import Test from "./pages/Test";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<PromptPage />} />
+      <Route path="/" element={<LandingPage />} />
       {/* <Route path="/" element={<LandingPage />} /> */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />

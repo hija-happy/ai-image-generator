@@ -125,199 +125,320 @@ const generateImage = async () => {
   
 
   return (
-    <div className="text-center p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Generate Hero Visual</h1>
-      
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
-          {/* Product Basics Section */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-left text-gray-800">Product Basics</h2>
-            
-            {/* Product Name */}
-            <div>
-              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
-                Product Name
-              </label>
-              <input
-                type="text"
-                placeholder="Enter product name..."
-                value={formData.productName}
-                onChange={(e) => handleInputChange('productName', e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Animated Background Bubbles */}
+      <div className="absolute inset-0">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-32 h-32 rounded-full opacity-40 mix-blend-screen animate-pulse"
+            style={{
+              background: i % 2 === 0 
+                ? 'radial-gradient(circle at 30% 30%, #cba6c1, #ff5fd2, #b967ff)' 
+                : 'radial-gradient(circle at 30% 30%, #4e04ee, #6019d2, #8b5cf6)',
+              filter: 'blur(60px)',
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${i * 0.5}s`,
+              animationDuration: `${3 + Math.random() * 2}s`
+            }}
+          />
+        ))}
+      </div>
 
-            {/* Product Category */}
-            <div>
-              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
-                Product Category
-              </label>
-              <select
-                value={formData.productCategory}
-                onChange={(e) => handleInputChange('productCategory', e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="SaaS">SaaS</option>
-                <option value="Mobile App">Mobile App</option>
-                <option value="Developer Tool">Developer Tool</option>
-                <option value="AI Product">AI Product</option>
-              </select>
-            </div>
-
-            {/* Industry */}
-            <div>
-              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
-                Industry
-              </label>
-              <select
-                value={formData.industry}
-                onChange={(e) => handleInputChange('industry', e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="Fintech">Fintech</option>
-                <option value="Health">Health</option>
-                <option value="Education">Education</option>
-                <option value="E-commerce">E-commerce</option>
-                <option value="Developer / Tech">Developer / Tech</option>
-                <option value="Marketing">Marketing</option>
-              </select>
-            </div>
+      {/* Hero Section */}
+      <div className="relative z-10 text-center pt-12 pb-8 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8">
+            <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-300 mb-4">
+              ✨ AI-Powered Hero Visuals
+            </span>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-purple-500 to-pink-400 bg-clip-text text-transparent">
+                Generate Hero Visuals
+              </span>
+            </h1>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+              Create stunning, professional hero images for your landing pages in seconds. 
+              Powered by intelligent prompts and quality guardrails.
+            </p>
           </div>
-
-          {/* Visual Preferences Section */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-left text-gray-800">Visual Preferences</h2>
-            
-            {/* Tone */}
-            <div>
-              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
-                Tone
-              </label>
-              <select
-                value={formData.tone}
-                onChange={(e) => handleInputChange('tone', e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="Clean & minimal">Clean & minimal</option>
-                <option value="Modern & futuristic">Modern & futuristic</option>
-                <option value="Friendly & playful">Friendly & playful</option>
-                <option value="Professional & serious">Professional & serious</option>
-              </select>
-            </div>
-
-            {/* Visual Style */}
-            <div>
-              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
-                Visual Style
-              </label>
-              <select
-                value={formData.visualStyle}
-                onChange={(e) => handleInputChange('visualStyle', e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="Flat illustration">Flat illustration</option>
-                <option value="3D illustration">3D illustration</option>
-                <option value="Abstract shapes">Abstract shapes</option>
-                <option value="Isometric UI-style">Isometric UI-style</option>
-              </select>
-            </div>
-
-            {/* Background */}
-            <div>
-              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
-                Background
-              </label>
-              <select
-                value={formData.background}
-                onChange={(e) => handleInputChange('background', e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="Light">Light</option>
-                <option value="Dark">Dark</option>
-                <option value="Soft gradient">Soft gradient</option>
-              </select>
-            </div>
-
-            {/* Aspect Ratio */}
-            <div>
-              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
-                Aspect Ratio
-              </label>
-              <select
-                value={formData.aspectRatio}
-                onChange={(e) => handleInputChange('aspectRatio', e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="16:9">16:9 (default hero)</option>
-                <option value="4:3">4:3</option>
-                <option value="1:1">1:1</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Errors Display */}
-        {errors.length > 0 && (
-          <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <div className="flex items-start">
-              <div className="text-red-400 mr-2">⚠️</div>
-              <div>
-                <h4 className="text-sm font-medium text-red-800">Please fix the following:</h4>
-                <ul className="mt-1 text-sm text-red-600">
-                  {errors.map((error, index) => (
-                    <li key={index} className="mt-1">• {error}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Warnings Display */}
-        {warnings.length > 0 && (
-          <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <div className="flex items-start">
-              <div className="text-yellow-400 mr-2">💡</div>
-              <div>
-                <h4 className="text-sm font-medium text-yellow-800">Suggestions:</h4>
-                <ul className="mt-1 text-sm text-yellow-600">
-                  {warnings.map((warning, index) => (
-                    <li key={index} className="mt-1">• {warning}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Generate Button */}
-        <div className="mt-8">
-          <button
-            onClick={generateImage}
-            className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            disabled={loading}
-          >
-            {loading ? "Generating Hero Visual..." : "Generate Hero Visual"}
-          </button>
         </div>
       </div>
 
+      {/* Main Form Container */}
+      <div className="relative z-10 max-w-6xl mx-auto px-6 pb-16">
+        <div className="bg-black/70 backdrop-blur-sm rounded-2xl shadow-2xl border border-purple-500/30 overflow-hidden">
+          
+          {/* Form Header */}
+          <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-8 py-6 text-white">
+            <h2 className="text-2xl font-semibold">Design Your Hero Visual</h2>
+            <p className="text-purple-100 mt-2">Fill out the details below to generate your custom hero image</p>
+          </div>
+
+          {/* Form Content */}
+          <div className="p-8 bg-gradient-to-br from-black/90 to-purple-900/20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              
+              {/* Product Basics Section */}
+              <div className="space-y-6">
+                <div className="flex items-center mb-6">
+                  <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
+                    1
+                  </div>
+                  <h3 className="text-xl font-semibold text-white">Product Basics</h3>
+                </div>
+                
+                {/* Product Name */}
+                <div className="group">
+                  <label className="block text-sm font-medium text-purple-300 mb-2">
+                    Product Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g., FlowAI, DataSync Pro..."
+                    value={formData.productName}
+                    onChange={(e) => handleInputChange('productName', e.target.value)}
+                    className="w-full p-4 border border-purple-500/30 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all duration-200 bg-black/50 backdrop-blur-sm text-white placeholder-purple-400"
+                  />
+                </div>
+
+                {/* Product Category */}
+                <div className="group">
+                  <label className="block text-sm font-medium text-purple-300 mb-2">
+                    Product Category
+                  </label>
+                  <select
+                    value={formData.productCategory}
+                    onChange={(e) => handleInputChange('productCategory', e.target.value)}
+                    className="w-full p-4 border border-purple-500/30 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all duration-200 bg-black/50 backdrop-blur-sm text-white"
+                  >
+                    <option value="SaaS" className="bg-black text-white">SaaS</option>
+                    <option value="Mobile App" className="bg-black text-white">Mobile App</option>
+                    <option value="Developer Tool" className="bg-black text-white">Developer Tool</option>
+                    <option value="AI Product" className="bg-black text-white">AI Product</option>
+                  </select>
+                </div>
+
+                {/* Industry */}
+                <div className="group">
+                  <label className="block text-sm font-medium text-purple-300 mb-2">
+                    Industry
+                  </label>
+                  <select
+                    value={formData.industry}
+                    onChange={(e) => handleInputChange('industry', e.target.value)}
+                    className="w-full p-4 border border-purple-500/30 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all duration-200 bg-black/50 backdrop-blur-sm text-white"
+                  >
+                    <option value="Fintech" className="bg-black text-white">Fintech</option>
+                    <option value="Health" className="bg-black text-white">Health</option>
+                    <option value="Education" className="bg-black text-white">Education</option>
+                    <option value="E-commerce" className="bg-black text-white">E-commerce</option>
+                    <option value="Developer / Tech" className="bg-black text-white">Developer / Tech</option>
+                    <option value="Marketing" className="bg-black text-white">Marketing</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Visual Preferences Section */}
+              <div className="space-y-6">
+                <div className="flex items-center mb-6">
+                  <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg flex items-center justify-center text-white text-sm font-bold mr-3">
+                    2
+                  </div>
+                  <h3 className="text-xl font-semibold text-white">Visual Preferences</h3>
+                </div>
+                
+                {/* Tone */}
+                <div className="group">
+                  <label className="block text-sm font-medium text-purple-300 mb-2">
+                    Tone
+                  </label>
+                  <select
+                    value={formData.tone}
+                    onChange={(e) => handleInputChange('tone', e.target.value)}
+                    className="w-full p-4 border border-purple-500/30 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all duration-200 bg-black/50 backdrop-blur-sm text-white"
+                  >
+                    <option value="Clean & minimal" className="bg-black text-white">Clean & minimal</option>
+                    <option value="Modern & futuristic" className="bg-black text-white">Modern & futuristic</option>
+                    <option value="Friendly & playful" className="bg-black text-white">Friendly & playful</option>
+                    <option value="Professional & serious" className="bg-black text-white">Professional & serious</option>
+                  </select>
+                </div>
+
+                {/* Visual Style */}
+                <div className="group">
+                  <label className="block text-sm font-medium text-purple-300 mb-2">
+                    Visual Style
+                  </label>
+                  <select
+                    value={formData.visualStyle}
+                    onChange={(e) => handleInputChange('visualStyle', e.target.value)}
+                    className="w-full p-4 border border-purple-500/30 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all duration-200 bg-black/50 backdrop-blur-sm text-white"
+                  >
+                    <option value="Flat illustration" className="bg-black text-white">Flat illustration</option>
+                    <option value="3D illustration" className="bg-black text-white">3D illustration</option>
+                    <option value="Abstract shapes" className="bg-black text-white">Abstract shapes</option>
+                    <option value="Isometric UI-style" className="bg-black text-white">Isometric UI-style</option>
+                  </select>
+                </div>
+
+                {/* Background */}
+                <div className="group">
+                  <label className="block text-sm font-medium text-purple-300 mb-2">
+                    Background
+                  </label>
+                  <select
+                    value={formData.background}
+                    onChange={(e) => handleInputChange('background', e.target.value)}
+                    className="w-full p-4 border border-purple-500/30 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all duration-200 bg-black/50 backdrop-blur-sm text-white"
+                  >
+                    <option value="Light" className="bg-black text-white">Light</option>
+                    <option value="Dark" className="bg-black text-white">Dark</option>
+                    <option value="Soft gradient" className="bg-black text-white">Soft gradient</option>
+                  </select>
+                </div>
+
+                {/* Aspect Ratio */}
+                <div className="group">
+                  <label className="block text-sm font-medium text-purple-300 mb-2">
+                    Aspect Ratio
+                  </label>
+                  <select
+                    value={formData.aspectRatio}
+                    onChange={(e) => handleInputChange('aspectRatio', e.target.value)}
+                    className="w-full p-4 border border-purple-500/30 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all duration-200 bg-black/50 backdrop-blur-sm text-white"
+                  >
+                    <option value="16:9" className="bg-black text-white">16:9 (default hero)</option>
+                    <option value="4:3" className="bg-black text-white">4:3</option>
+                    <option value="1:1" className="bg-black text-white">1:1</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Errors Display */}
+            {errors.length > 0 && (
+              <div className="mt-8 p-6 bg-red-900/30 border border-red-500/50 rounded-xl backdrop-blur-sm">
+                <div className="flex items-start">
+                  <div className="text-red-400 text-xl mr-3">⚠️</div>
+                  <div>
+                    <h4 className="text-lg font-medium text-red-300 mb-2">Please fix the following:</h4>
+                    <ul className="space-y-1 text-red-200">
+                      {errors.map((error, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="text-red-400 mr-2">•</span>
+                          <span>{error}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Warnings Display */}
+            {warnings.length > 0 && (
+              <div className="mt-6 p-6 bg-yellow-900/30 border border-yellow-500/50 rounded-xl backdrop-blur-sm">
+                <div className="flex items-start">
+                  <div className="text-yellow-400 text-xl mr-3">💡</div>
+                  <div>
+                    <h4 className="text-lg font-medium text-yellow-300 mb-2">Suggestions for better results:</h4>
+                    <ul className="space-y-1 text-yellow-200">
+                      {warnings.map((warning, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="text-yellow-400 mr-2">•</span>
+                          <span>{warning}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Generate Button */}
+            <div className="mt-10 text-center">
+              <button
+                onClick={generateImage}
+                disabled={loading}
+                className="group relative inline-flex items-center px-12 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-lg font-semibold rounded-2xl hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-4 focus:ring-purple-500/50 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-300 shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transform hover:-translate-y-1"
+              >
+                {loading ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Generating your hero visual...
+                  </>
+                ) : (
+                  <>
+                    <span className="mr-2">✨</span>
+                    Generate Hero Visual
+                    <svg className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5-5 5M6 12h12"></path>
+                    </svg>
+                  </>
+                )}
+              </button>
+              <p className="mt-4 text-sm text-purple-400">
+                High-quality results in 10-15 seconds
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Loading State */}
       {loading && (
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-          <p className="text-blue-700">Generating your hero visual...</p>
+        <div className="relative z-10 max-w-6xl mx-auto px-6 pb-8">
+          <div className="bg-black/80 backdrop-blur-sm p-8 rounded-2xl border border-purple-500/30 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-4">
+              <svg className="animate-spin w-8 h-8 text-white" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">Creating your hero visual</h3>
+            <p className="text-purple-300">Please wait while we generate your custom image...</p>
+          </div>
         </div>
       )}
 
+      {/* Generated Image Display */}
       {imageURL && (
-        <div className="mt-8 bg-white p-6 rounded-lg shadow-lg">
-          <h3 className="text-xl font-semibold mb-4">Your Hero Visual</h3>
-          <img 
-            src={imageURL} 
-            alt="Generated Hero Visual" 
-            className="max-w-full mx-auto rounded-lg shadow-md" 
-          />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 pb-16">
+          <div className="bg-black/80 backdrop-blur-sm rounded-2xl border border-purple-500/30 overflow-hidden">
+            <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-8 py-6 text-white">
+              <h3 className="text-2xl font-semibold flex items-center">
+                <span className="mr-3">🎉</span>
+                Your Hero Visual is Ready!
+              </h3>
+              <p className="text-purple-100 mt-2">Download and use in your landing page</p>
+            </div>
+            <div className="p-8">
+              <div className="relative group">
+                <img 
+                  src={imageURL} 
+                  alt="Generated Hero Visual" 
+                  className="w-full rounded-xl shadow-2xl shadow-purple-500/20 transition-transform duration-300 group-hover:scale-[1.02]" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              <div className="mt-6 flex justify-center space-x-4">
+                <button className="px-6 py-3 bg-black/50 border border-purple-500/50 text-purple-300 rounded-lg hover:bg-purple-900/30 hover:border-purple-400 transition-colors">
+                  Download PNG
+                </button>
+                <button 
+                  onClick={() => {setImageURL(null); setFormData({...formData})}}
+                  className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors"
+                >
+                  Generate Another
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

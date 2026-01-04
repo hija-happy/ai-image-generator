@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { buildPrompt } from '../utils/promptLayers/index.js';
+import { validateInputs } from '../utils/uxGuards.js';
 
 const PromptPage = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,8 @@ const PromptPage = () => {
   });
   const [imageURL, setImageURL] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [warnings, setWarnings] = useState([]);
 
   const handleInputChange = (field, value) => {
     const updatedFormData = {
@@ -21,6 +24,10 @@ const PromptPage = () => {
     };
     
     setFormData(updatedFormData);
+    
+    // Real-time validation (warnings only, not errors)
+    const { warnings: newWarnings } = validateInputs(updatedFormData);
+    setWarnings(newWarnings);
     
     // Convert to JSON and console.log for testing
     const inputs = {
@@ -41,8 +48,19 @@ const PromptPage = () => {
   };
 
 const generateImage = async () => {
+  // Validate inputs before proceeding
+  const validation = validateInputs(formData);
+  
+  if (validation.errors.length > 0) {
+    setErrors(validation.errors);
+    return;
+  }
+  
+  // Clear any previous errors
+  setErrors([]);
+  
   if (!formData.productName.trim()) {
-    alert("Please enter a product name");
+    setErrors(["Please enter a product name"]);
     return;
   }
 
@@ -215,6 +233,40 @@ const generateImage = async () => {
             </div>
           </div>
         </div>
+
+        {/* Errors Display */}
+        {errors.length > 0 && (
+          <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex items-start">
+              <div className="text-red-400 mr-2">⚠️</div>
+              <div>
+                <h4 className="text-sm font-medium text-red-800">Please fix the following:</h4>
+                <ul className="mt-1 text-sm text-red-600">
+                  {errors.map((error, index) => (
+                    <li key={index} className="mt-1">• {error}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Warnings Display */}
+        {warnings.length > 0 && (
+          <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <div className="flex items-start">
+              <div className="text-yellow-400 mr-2">💡</div>
+              <div>
+                <h4 className="text-sm font-medium text-yellow-800">Suggestions:</h4>
+                <ul className="mt-1 text-sm text-yellow-600">
+                  {warnings.map((warning, index) => (
+                    <li key={index} className="mt-1">• {warning}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Generate Button */}
         <div className="mt-8">

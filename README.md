@@ -3,8 +3,6 @@
 
 AI Hero Visual Generator is a modern, professional web application that creates conversion-optimized hero images for landing pages. Built with React and featuring a beautiful dark theme with purple-pink gradients, it combines intelligent prompt engineering with user-friendly design.
 
-![AI Hero Visual Generator](https://via.placeholder.com/1200x600/0a0a0b/8b5cf6?text=AI+Hero+Visual+Generator)
-
 
 ## 🎭 Key Features
 
@@ -150,6 +148,11 @@ Visit `http://localhost:5173` to see the application.
 3. **Visual Direction** - Style preferences (controlled)
 4. **Composition** - Layout guidelines (constant)
 5. **Negative Prompts** - Quality control (constant)
+
+## 🌍 Live Demo
+
+
+🔗 **[View Live Application](https://landing-visual-ai.netlify.app/)**
 
 ## 🤝 Contributing
 

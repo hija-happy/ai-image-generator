@@ -52,7 +52,7 @@ const LandingPage = () => {
         </div>
         <div>
             <button 
-            onClick={ () => navigate('/login')}
+            onClick={ () => navigate('/prompt')}
             className='btn'>Start Creating Now</button>
         </div>
     </div>

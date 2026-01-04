@@ -45,6 +45,7 @@ const PromptPage = () => {
 
   const generatePrompt = () => {
     return buildPrompt(formData);
+    console.log("Generated Prompt:", prompt);
   };
 
 const generateImage = async () => {
@@ -261,7 +262,7 @@ const generateImage = async () => {
                   >
                     <option value="Clean & minimal" className="bg-black text-white">Clean & minimal</option>
                     <option value="Modern & futuristic" className="bg-black text-white">Modern & futuristic</option>
-                    <option value="Friendly & playful" className="bg-black text-white">Friendly & playful</option>
+                    <option value="Friendly & playful" className="bg-black text-white">Friendly, playful & product focused</option>
                     <option value="Professional & serious" className="bg-black text-white">Professional & serious</option>
                   </select>
                 </div>

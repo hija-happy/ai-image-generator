@@ -8,5 +8,13 @@ busy backgrounds,
 random text,
 logos,
 watermarks,
-overly artistic poster styles.`;
+UI screenshots,
+website mockups,
+readable text,
+dashboards,
+fake interfaces,
+overly artistic poster styles.
+navigation bars, buttons, headings, or interface layouts.
+readable text of any kind.
+`;
 };

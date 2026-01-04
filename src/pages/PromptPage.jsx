@@ -73,7 +73,7 @@ const generateImage = async () => {
   
 
    try {
-    const res = await fetch(`${API_URL}/api/generate-image`, {
+    const res = await fetch(`${API_URL}api/generate-image`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

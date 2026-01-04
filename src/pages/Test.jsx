@@ -5,7 +5,7 @@ function Test() {
   const [imageUrl, setImageUrl] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const API_KEY = "AIzaSyAg-my8qjStjA4ndSoetPdm6G8KEawkUCA"; // replace with your key
+  const API_KEY = ""; // replace with your key
 
   const generateImage = async () => {
     if (!prompt) return;

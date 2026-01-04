@@ -1,21 +1,58 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { buildPrompt } from '../utils/promptLayers/index.js';
 
 const PromptPage = () => {
-  const [prompt, setPrompt] = useState("");
+  const [formData, setFormData] = useState({
+    productName: "",
+    productCategory: "SaaS",
+    industry: "Fintech",
+    tone: "Clean & minimal",
+    visualStyle: "Flat illustration",
+    background: "Light",
+    aspectRatio: "16:9"
+  });
   const [imageURL, setImageURL] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const handleInputChange = (field, value) => {
+    const updatedFormData = {
+      ...formData,
+      [field]: value
+    };
+    
+    setFormData(updatedFormData);
+    
+    // Convert to JSON and console.log for testing
+    const inputs = {
+      productName: updatedFormData.productName,
+      productCategory: updatedFormData.productCategory,
+      industry: updatedFormData.industry,
+      tone: updatedFormData.tone,
+      visualStyle: updatedFormData.visualStyle,
+      background: updatedFormData.background,
+      aspectRatio: updatedFormData.aspectRatio
+    };
+    
+    console.log("Current inputs as JSON:", JSON.stringify(inputs, null, 2));
+  };
+
+  const generatePrompt = () => {
+    return buildPrompt(formData);
+  };
+
 const generateImage = async () => {
-  if (!prompt.trim()) {
-    alert("Please enter a prompt");
+  if (!formData.productName.trim()) {
+    alert("Please enter a product name");
     return;
   }
 
   setLoading(true);
   setImageURL(null); // clear old image while loading
 
+  const prompt = generatePrompt();
+
   try {
-    const res = await fetch("http://localhost:3001/api/generate", {
+    const res = await fetch("http://localhost:5000/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt }),
@@ -46,28 +83,173 @@ const generateImage = async () => {
   
 
   return (
-    <div className="text-center p-4">
-      <h1 className="text-xl font-bold mb-2">AI Image Generator</h1>
-      <input
-        type="text"
-        placeholder="Enter your prompt..."
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        className="p-2 border rounded w-full max-w-md"
-      />
-        <button
-        onClick={generateImage}
-        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
-        disabled={loading} // disable button while loading
-      >
-        {loading ? "Generating..." : "Generate"}
-      </button>
+    <div className="text-center p-6 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6">Generate Hero Visual</h1>
+      
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          {/* Product Basics Section */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-left text-gray-800">Product Basics</h2>
+            
+            {/* Product Name */}
+            <div>
+              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
+                Product Name
+              </label>
+              <input
+                type="text"
+                placeholder="Enter product name..."
+                value={formData.productName}
+                onChange={(e) => handleInputChange('productName', e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
 
-      {loading && <p className="mt-4">Generating image...</p>}
+            {/* Product Category */}
+            <div>
+              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
+                Product Category
+              </label>
+              <select
+                value={formData.productCategory}
+                onChange={(e) => handleInputChange('productCategory', e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="SaaS">SaaS</option>
+                <option value="Mobile App">Mobile App</option>
+                <option value="Developer Tool">Developer Tool</option>
+                <option value="AI Product">AI Product</option>
+              </select>
+            </div>
+
+            {/* Industry */}
+            <div>
+              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
+                Industry
+              </label>
+              <select
+                value={formData.industry}
+                onChange={(e) => handleInputChange('industry', e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="Fintech">Fintech</option>
+                <option value="Health">Health</option>
+                <option value="Education">Education</option>
+                <option value="E-commerce">E-commerce</option>
+                <option value="Developer / Tech">Developer / Tech</option>
+                <option value="Marketing">Marketing</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Visual Preferences Section */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-left text-gray-800">Visual Preferences</h2>
+            
+            {/* Tone */}
+            <div>
+              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
+                Tone
+              </label>
+              <select
+                value={formData.tone}
+                onChange={(e) => handleInputChange('tone', e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="Clean & minimal">Clean & minimal</option>
+                <option value="Modern & futuristic">Modern & futuristic</option>
+                <option value="Friendly & playful">Friendly & playful</option>
+                <option value="Professional & serious">Professional & serious</option>
+              </select>
+            </div>
+
+            {/* Visual Style */}
+            <div>
+              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
+                Visual Style
+              </label>
+              <select
+                value={formData.visualStyle}
+                onChange={(e) => handleInputChange('visualStyle', e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="Flat illustration">Flat illustration</option>
+                <option value="3D illustration">3D illustration</option>
+                <option value="Abstract shapes">Abstract shapes</option>
+                <option value="Isometric UI-style">Isometric UI-style</option>
+              </select>
+            </div>
+
+            {/* Background */}
+            <div>
+              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
+                Background
+              </label>
+              <select
+                value={formData.background}
+                onChange={(e) => handleInputChange('background', e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="Light">Light</option>
+                <option value="Dark">Dark</option>
+                <option value="Soft gradient">Soft gradient</option>
+              </select>
+            </div>
+
+            {/* Aspect Ratio */}
+            <div>
+              <label className="block text-left text-sm font-medium text-gray-700 mb-1">
+                Aspect Ratio
+              </label>
+              <select
+                value={formData.aspectRatio}
+                onChange={(e) => handleInputChange('aspectRatio', e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="16:9">16:9 (default hero)</option>
+                <option value="4:3">4:3</option>
+                <option value="1:1">1:1</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Generate Button */}
+        <div className="mt-8">
+          <button
+            onClick={generateImage}
+            className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            disabled={loading}
+          >
+            {loading ? "Generating Hero Visual..." : "Generate Hero Visual"}
+          </button>
+        </div>
+
+        {/* Generated Prompt Preview */}
+        {formData.productName && (
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <h3 className="text-sm font-medium text-gray-700 mb-2">Generated Prompt:</h3>
+            <p className="text-sm text-gray-600 text-left">{generatePrompt()}</p>
+          </div>
+        )}
+      </div>
+
+      {loading && (
+        <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+          <p className="text-blue-700">Generating your hero visual...</p>
+        </div>
+      )}
 
       {imageURL && (
-        <div className="mt-4">
-          <img src={imageURL} alt="Generated" className="max-w-full rounded" />
+        <div className="mt-8 bg-white p-6 rounded-lg shadow-lg">
+          <h3 className="text-xl font-semibold mb-4">Your Hero Visual</h3>
+          <img 
+            src={imageURL} 
+            alt="Generated Hero Visual" 
+            className="max-w-full mx-auto rounded-lg shadow-md" 
+          />
         </div>
       )}
     </div>

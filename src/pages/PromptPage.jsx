@@ -124,6 +124,31 @@ const generateImage = async () => {
   }
 };
 
+const downloadImage = () => {
+  if (!imageURL) return;
+  
+  try {
+    // Create a temporary link element for downloading
+    const link = document.createElement('a');
+    link.href = imageURL;
+    
+    // Generate filename based on product name and timestamp
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+    const productName = formData.productName ? formData.productName.replace(/[^a-zA-Z0-9]/g, '-') : 'hero-image';
+    link.download = `${productName}-${timestamp}.png`;
+    
+    // Temporarily add link to DOM and trigger download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    console.log('Image download initiated');
+  } catch (error) {
+    console.error('Error downloading image:', error);
+    alert('Failed to download image. Please try again.');
+  }
+};
+
     
   
 
@@ -430,7 +455,13 @@ const generateImage = async () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
               <div className="mt-6 flex justify-center space-x-4">
-                <button className="px-6 py-3 bg-black/50 border border-purple-500/50 text-purple-300 rounded-lg hover:bg-purple-900/30 hover:border-purple-400 transition-colors">
+                <button 
+                  onClick={downloadImage}
+                  className="px-6 py-3 bg-black/50 border border-purple-500/50 text-purple-300 rounded-lg hover:bg-purple-900/30 hover:border-purple-400 transition-colors flex items-center"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                  </svg>
                   Download PNG
                 </button>
                 <button 

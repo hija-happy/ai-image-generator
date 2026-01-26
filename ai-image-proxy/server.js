@@ -83,9 +83,9 @@
 
 
 
-import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import express from "express";
 
 dotenv.config();
 
@@ -97,8 +97,35 @@ app.use(express.json());
 app.post("/api/generate-image", async (req, res) => {
   const { prompt, aspectRatio } = req.body;
 
+  console.log("🔍 Received request:");
+  console.log("- Prompt length:", prompt?.length || 0);
+  console.log("- Aspect ratio:", aspectRatio);
+  console.log("- First 100 chars of prompt:", prompt?.substring(0, 100) || "EMPTY");
+
   if (!prompt || typeof prompt !== "string") {
+    console.error("❌ Invalid prompt:", typeof prompt, prompt);
     return res.status(400).json({ error: "Prompt is required" });
+  }
+
+  if (prompt.trim().length === 0) {
+    console.error("❌ Empty prompt after trim");
+    return res.status(400).json({ error: "Prompt cannot be empty" });
+  }
+
+  // Truncate prompt if it exceeds Stability API limit (2000 chars)
+  let finalPrompt = prompt.trim();
+  if (finalPrompt.length > 2000) {
+    console.warn(`⚠️ Prompt too long (${finalPrompt.length} chars), truncating to 2000`);
+    finalPrompt = finalPrompt.substring(0, 2000);
+    // Try to truncate at a sentence boundary to avoid cutting words
+    const lastPeriod = finalPrompt.lastIndexOf('.');
+    const lastSpace = finalPrompt.lastIndexOf(' ');
+    if (lastPeriod > 1900) {
+      finalPrompt = finalPrompt.substring(0, lastPeriod + 1);
+    } else if (lastSpace > 1900) {
+      finalPrompt = finalPrompt.substring(0, lastSpace);
+    }
+    console.log(`📝 Truncated prompt to ${finalPrompt.length} characters`);
   }
 
   // ✅ VALID Stability sizes (divisible by 64)
@@ -112,6 +139,22 @@ const { width, height } = sizeMap[aspectRatio] || sizeMap["16:9"];
 
 
   try {
+    const requestBody = {
+      text_prompts: [
+        {
+          text: finalPrompt
+        }
+      ],
+      cfg_scale: 7,
+      steps: 25,
+      width,
+      height
+    };
+
+    console.log("📤 Sending to Stability API:");
+    console.log("- Final prompt text length:", requestBody.text_prompts[0].text.length);
+    console.log("- Width x Height:", width, "x", height);
+
     const response = await fetch(
       "https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image",
       {
@@ -121,17 +164,7 @@ const { width, height } = sizeMap[aspectRatio] || sizeMap["16:9"];
           "Content-Type": "application/json",
           Accept: "application/json"
         },
-        body: JSON.stringify({
-          text_prompts: [
-            {
-              text: prompt
-            }
-          ],
-          cfg_scale: 7,
-          steps: 25,
-          width,
-          height
-        })
+        body: JSON.stringify(requestBody)
       }
     );
 

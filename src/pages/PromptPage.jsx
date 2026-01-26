@@ -8,7 +8,7 @@ const PromptPage = () => {
     productCategory: "SaaS",
     industry: "Fintech",
     tone: "Clean & minimal",
-    visualStyle: "Flat illustration",
+    visualStyle: "Minimalist photography",
     background: "Light",
     aspectRatio: "16:9"
   });
@@ -46,8 +46,11 @@ const PromptPage = () => {
   };
 
   const generatePrompt = () => {
-    return buildPrompt(formData);
+    const prompt = buildPrompt(formData);
+    console.log("Form data being used:", JSON.stringify(formData, null, 2));
     console.log("Generated Prompt:", prompt);
+    console.log("Prompt length:", prompt.length);
+    return prompt;
   };
 
 const generateImage = async () => {
@@ -70,14 +73,21 @@ const generateImage = async () => {
   setLoading(true);
   setImageURL(null); // clear old image while loading
 
+  // Generate and validate prompt before API call
+  const prompt = generatePrompt();
   
+  if (!prompt || prompt.trim().length === 0) {
+    setErrors(["Failed to generate prompt. Please check all fields are filled."]);
+    setLoading(false);
+    return;
+  }
 
    try {
     const res = await fetch(`${API_URL}api/generate-image`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        prompt: generatePrompt(),
+        prompt: prompt,
         aspectRatio: formData.aspectRatio || "16:9"
       })
     });
@@ -304,10 +314,12 @@ const downloadImage = () => {
                     onChange={(e) => handleInputChange('visualStyle', e.target.value)}
                     className="w-full p-4 border border-purple-500/30 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-400 transition-all duration-200 bg-black/50 backdrop-blur-sm text-white"
                   >
-                    <option value="Flat illustration" className="bg-black text-white">Flat illustration</option>
-                    <option value="3D illustration" className="bg-black text-white">3D illustration</option>
-                    <option value="Abstract shapes" className="bg-black text-white">Abstract shapes</option>
-                    <option value="Isometric UI-style" className="bg-black text-white">Isometric UI-style</option>
+                    <option value="Minimalist photography" className="bg-black text-white">Minimalist photography</option>
+                    <option value="Corporate photography" className="bg-black text-white">Corporate photography</option>
+                    <option value="Creative photography" className="bg-black text-white">Creative photography</option>
+                    <option value="Lifestyle photography" className="bg-black text-white">Lifestyle photography</option>
+                    <option value="Abstract photography" className="bg-black text-white">Abstract photography</option>
+                    <option value="Product photography" className="bg-black text-white">Product photography</option>
                   </select>
                 </div>
 
